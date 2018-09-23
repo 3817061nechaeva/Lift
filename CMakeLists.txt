@@ -16,5 +16,5 @@ file(GLOB srcs "*.cpp") #Добавляем в переменную srcs все 
 
 add_executable(${PROJECT_NAME} ${srcs} ${hdrs}) #Создаем проект с именем из переменной ${PROJECT_NAME}, в него добавляются файлы из переменных ${srcs} и ${hdrs}
 
-#add_subdirectory(lib1) #Собираем проект в поддиректории lib1
+add_subdirectory(Lift_lib) #Собираем проект в поддиректории lib1
 target_link_libraries(${PROJECT_NAME} ${Lift_lib}) #Подключаем к проекту с именем ${PROJECT_NAME} библиотеку с именем ${MyLib1}
