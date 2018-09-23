@@ -28,14 +28,17 @@ namespace SLift
 		int GetLevelLift();
 		int GetWeithNow();
 
-		void LiftClose(); //Попытка закрыть дверь
+		void LiftCloseOpen(); //Попытка закрыть дверь
 		void LiftWeith();//Метод "Выйдете у нас перевес"
 		void Zapolnenie_Level_People_Need();
 		void Zapolnenie_Level_People();
-		int Naxojdenie_Max_Etaja();
-		int FoundMInLevel ();
+		int Naxojdenie_Max_Etaja_Visadit();
+		int FoundMInLevelVisadit();
+		int FoundMaxLevelZabrat();
+		void LiftExitPeople();
 
-		void LiftMovie();//Основной метод для движения лифта
+		void LiftMovieUp();//Основной метод для движения лифта
+		void LiftMovieDown();
 
 	};
 }
