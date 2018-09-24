@@ -151,37 +151,26 @@ namespace SLift
 	//---------------------------------------------------------------------------------
 	void TLift::LiftCloseOpen()
 	{
-		int i=0;
-
-		while (i=0)
-		{
-			cout << "Открытие/Закрытие дверей\n";
-			cin >> i;
-			Sleep (5000);
-		}
-
+		cout << "Открытие/Закрытие дверей\n";
+		Sleep (5);
 	}
 
 	//---------------------------------------------------------------------------------
 	void TLift::LiftWeith()
 	{
 		int weith=0;
-		int sumweith=0;
 		int j=0;
-
 		cout << "Введите суммарный вес всех вошедших пассажиров\n";
 		cin >> weith;
-
-		while (j=0)
+		weithNow += weith;
+		while (j==0)
 		{
-			sumweith = weithNow + weith;
-			SetWeithNow(sumweith);
-
-			if (sumweith > weithMax)
+			if (weithNow > weithMax)
 			{
 				cout << "Перегрузка. Невозможно продолжать движение.\nПросим последнего зашедшего пассажира выйти и дождаться освобождения лифта.\n";
 				cout << "Введите вес вышедшего пассажира\n";
 				cin >> weith;
+				weithNow -= weith;
 			}
 			else
 			{
@@ -199,11 +188,7 @@ namespace SLift
 		{ 
 			cout << "Введите этаж, на который вам надо приехать\n"; 
 			cin >> a; 
-			for (int k = 0; k <= level; k++) 
-			{ 
-				if (k == a) 
-					levelPeopleNeed[k] = 1; 
-			} 
+			levelPeopleNeed[a] = 1; 
 			cout << "Есть ли ещё люди, которые не выбрали нужный этаж? (1 - да)\n"; 
 			cin >> j; 
 		} 
@@ -238,12 +223,11 @@ namespace SLift
 			if (levelPeopleNeed[i] == 1) 
 			{
 				a = i; 
-				i=0;
+				i = -1;
 			}
 		} 
 		return a; 
 	}
-
 	//---------------------------------------------------------------------------------
 	int TLift::FoundMInLevelVisadit() 
 	{ 
@@ -252,6 +236,7 @@ namespace SLift
 			if (levelPeopleNeed[i]==1)
 			{
 				min = i;
+				i = level + 1;
 			} 
 		return min;
 	} 
@@ -265,7 +250,7 @@ namespace SLift
 			if (levelPeople[i] == 1)
 			{
 				a = i;
-				i = 0;
+				i = -1;
 			}
 		}
 		return a;
@@ -292,13 +277,19 @@ namespace SLift
 		levelLift = 0;
 		weithNow = 0;
 		Zapolnenie_Level_People();
-		for (int i = 0; i <= FoundMaxLevelZabrat(); i++)
+		int i;
+		int a;
+		int MaxMax;
+		int MaxZabrat = FoundMaxLevelZabrat();
+		int MaxVzit;
+		int Min;
+		for (i = 0; i <= level; i++)
 		{
 			if (levelPeople[i] == 1)
 			{
 				levelPeople[i] = 0;
 				levelLift = i;
-				cout << "Лифт приехал на " << i << "этаж\n";
+				cout << "Лифт приехал на " << i << " этаж\n";
 				LiftCloseOpen();
 				if (levelPeopleNeed[i] == 1)
 				{
@@ -307,44 +298,46 @@ namespace SLift
 				}
 				LiftWeith();
 				Zapolnenie_Level_People_Need();
+	/*			if (i == 0)
+				{
+					 MaxVzit = Naxojdenie_Max_Etaja_Visadit();
+					 Min = FoundMInLevelVisadit();
+					if (MaxZabrat <= MaxVzit)
+						MaxMax = MaxVzit;
+					else
+						MaxMax = MaxZabrat;
+				}*/
 				LiftCloseOpen();
 			}
 		}
-		for (int i = FoundMaxLevelZabrat(); i <= Naxojdenie_Max_Etaja_Visadit(); i++)
+	/*	for (i = level; i <= MaxVzit; i++)
 		{
 			if (levelPeopleNeed[i] == 1)
 			{
 				levelLift = i;
-				cout << "Лифт приехал на " << i << "этаж\n";
+				cout << "Лифт приехал на " << i << " этаж\n";
 				LiftCloseOpen();
 				levelPeopleNeed[i] = 0;
 				LiftExitPeople();
 				LiftCloseOpen();
 			}
 		}
+		return MaxMax;*/
 	}
 	void TLift::LiftMovieDown()
 	{
 		int i;
-		if (FoundMaxLevelZabrat() <= Naxojdenie_Max_Etaja_Visadit())
-			i = Naxojdenie_Max_Etaja_Visadit();
-		else
-			i = FoundMaxLevelZabrat();
-		for (i; i <= FoundMInLevelVisadit(); i++)
+		for (i = level; i >= 0; i--)
 		{
-			if (levelPeople[i] == 1)
+			if (levelPeopleNeed[i] == 1)
 			{
-				levelPeople[i] = 0;
+				levelPeopleNeed[i] = 0;
 				levelLift = i;
 				cout << "Лифт приехал на " << i << "этаж\n";
 				LiftCloseOpen();
-				if (levelPeopleNeed[i] == 1)
-				{
-					levelPeopleNeed[i] = 0;
-					LiftExitPeople();
-				}
-				LiftWeith();
-				Zapolnenie_Level_People_Need();
+				LiftExitPeople();
+				//LiftWeith();
+				//Zapolnenie_Level_People_Need();
 				LiftCloseOpen();
 			}
 		}
