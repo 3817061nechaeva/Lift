@@ -21,5 +21,6 @@ void main()
 	cout << "Введите положение лифта\n";
 	cin >> gde_stoit_lift;
 	A.SetLevelLift(gde_stoit_lift);
-
+	A.LiftMovieUp();
+	A.LiftMovieDown();
 }

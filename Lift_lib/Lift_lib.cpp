@@ -8,9 +8,24 @@ namespace SLift
 	//---------------------------------------------------------------------------------
 	TLift::TLift()
 	{
+		int kol = 30;
+		if (kol != 0)
+		{
+			levelPeople = new int[kol];
+			for (int i = 0; i<kol; i++)
+			{
+				levelPeople[i] = 0;
+			}
+		}
 		level = 0;
-		levelPeople = 0;
-		levelPeopleNeed = 0;
+		if (kol != 0)
+		{
+			levelPeopleNeed = new int[kol];
+			for (int i = 0; i<kol; i++)
+			{
+				levelPeopleNeed[i] = 0;
+			}
+		}
 		levelLift = 0;
 		weithMax = 0;
 		weithNow = 0;
@@ -57,13 +72,13 @@ namespace SLift
 		weithNow = wn;
 
 		levelPeople = new int [kol];
-		for (int i=0; i<kol; i++)
+		for (int i=0; i<=kol; i++)
 		{
 			levelPeople[i] = lvlP[i];
 		}
 
 		levelPeopleNeed = new int [kol];
-		for (int i=0; i<kol; i++)
+		for (int i=0; i<=kol; i++)
 		{
 			levelPeopleNeed[i] = lvlPN[i];
 		}
@@ -85,7 +100,7 @@ namespace SLift
 	//---------------------------------------------------------------------------------
 	void TLift::SetLevel(int lvl)
 	{
-		if (lvl>0)
+		if (lvl>=0)
 		{
 			level = lvl;
 		}
@@ -94,21 +109,27 @@ namespace SLift
 	//---------------------------------------------------------------------------------
 	void TLift::SetWeithMax(int wm)
 	{
-		if (wm>0)
+		if (wm>=0)
 		{
 			weithMax = wm;
 		}
 	}
-
 	//---------------------------------------------------------------------------------
 	void TLift::SetLevelLift(int lvlL)
 	{
-		if (lvlL>0)
+		if (lvlL>=0)
 		{
 			levelLift = lvlL;
 		}
 	}
-
+	//---------------------------------------------------------------------------------
+	void TLift::SetWeithNow(int wn)
+	{
+		if (wn>=0)
+		{
+			levelLift = wn;
+		}
+	}
 	//---------------------------------------------------------------------------------
 	int TLift::GetLevel()
 	{
@@ -178,7 +199,7 @@ namespace SLift
 		{ 
 			cout << "¬ведите этаж, на который вам надо приехать\n"; 
 			cin >> a; 
-			for (int k = 1; k < level; k++) 
+			for (int k = 0; k <= level; k++) 
 			{ 
 				if (k == a) 
 					levelPeopleNeed[k] = 1; 
@@ -197,7 +218,7 @@ namespace SLift
 		{ 
 			cout << "¬ведите этаж, на котором вы находитесь\n"; 
 			cin >> a; 
-			for (int k = 1; k < level; k++) 
+			for (int k = 0; k <= level; k++) 
 			{ 
 				if (k == a) 
 					levelPeople[k] = 1; 
@@ -211,8 +232,8 @@ namespace SLift
 	int TLift::Naxojdenie_Max_Etaja_Visadit()
 	{ 
 		int i; 
-		int a; 
-		for (i = level; i > 0; i--) 
+		int a = 0; 
+		for (i = level; i >= 0; i--) 
 		{ 
 			if (levelPeopleNeed[i] == 1) 
 			{
@@ -226,20 +247,20 @@ namespace SLift
 	//---------------------------------------------------------------------------------
 	int TLift::FoundMInLevelVisadit() 
 	{ 
-		int max = 0;
-		for (int i = 1; i <= level ; i++) 
+		int min = 0;
+		for (int i = 0; i <= level ; i++) 
 			if (levelPeopleNeed[i]==1)
 			{
-				int min = i;
-		return min; 
+				min = i;
 			} 
+		return min;
 	} 
 	//---------------------------------------------------------------------------------
 	int TLift::FoundMaxLevelZabrat()
 	{
 		int i;
-		int a;
-		for (i = level; i > 0; i--)
+		int a = 0;
+		for (i = level; i >= 0; i--)
 		{
 			if (levelPeople[i] == 1)
 			{
@@ -268,10 +289,10 @@ namespace SLift
 	//---------------------------------------------------------------------------------
 	void TLift::LiftMovieUp()
 	{
-		levelLift = 1;
+		levelLift = 0;
 		weithNow = 0;
 		Zapolnenie_Level_People();
-		for (int i = 1; i <= FoundMaxLevelZabrat(); i++)
+		for (int i = 0; i <= FoundMaxLevelZabrat(); i++)
 		{
 			if (levelPeople[i] == 1)
 			{
@@ -305,7 +326,7 @@ namespace SLift
 	void TLift::LiftMovieDown()
 	{
 		int i;
-		if (FoundMaxLevelZabrat() < Naxojdenie_Max_Etaja_Visadit())
+		if (FoundMaxLevelZabrat() <= Naxojdenie_Max_Etaja_Visadit())
 			i = Naxojdenie_Max_Etaja_Visadit();
 		else
 			i = FoundMaxLevelZabrat();
